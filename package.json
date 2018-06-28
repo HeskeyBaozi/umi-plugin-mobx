@@ -1,0 +1,18 @@
+{
+  "name": "umi-plugin-mobx",
+  "version": "0.1.0",
+  "description": "mobx eco applying with umi",
+  "main": "index.js",
+  "repository": "https://github.com/HeskeyBaozi/umi-plugin-mobx",
+  "author": "HeskeyBaozi<hezhiyu233@foxmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "rollup": "^0.62.0",
+    "rollup-plugin-typescript2": "^0.15.1",
+    "typescript": "^2.9.2"
+  },
+  "dependencies": {
+    "mobx": "^5.0.3",
+    "mobx-react": "^5.2.3"
+  }
+}
