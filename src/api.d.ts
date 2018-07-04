@@ -1,3 +1,44 @@
-export default class PluginAPI {
-  register: (key: string, fn: (...args: any[]) => any) => void;
+import { Resolve } from 'webpack';
+
+export interface Service {
+  paths: {
+    absTmpDirPath: string;
+    absSrcPath: string;
+  },
+  config: {
+    singular: boolean;
+  }
+}
+
+export interface PlaceHolder {
+  IMPORT: string;
+  RENDER: string;
+  ROUTER_MODIFIER: string;
+  ROUTES_MODIFIER: string;
+  HISTORY_MODIFIER: string;
+}
+
+export type RegisterableHooks = 'generateFiles' | 'modifyEntryFile' | 'modifyAFWebpackOpts';
+
+export interface ReducerArg<M, A> {
+  memo: M;
+  args: A;
+}
+
+export interface AfWebpackOptions {
+  alias: Resolve['alias'];
+}
+
+export type TestFn = (k: string) => boolean;
+export type Excludes = (RegExp | TestFn)[]
+
+export interface PluginOptions {
+  modelName?: 'model' | 'store';
+  exclude?: Excludes;
+}
+
+export interface PluginAPI {
+  register: <M, A>(hookName: RegisterableHooks, fn: (arg: ReducerArg<M, A>) => M) => void;
+  service: Service;
+  placeholder: PlaceHolder;
 }

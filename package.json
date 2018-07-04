@@ -1,18 +1,45 @@
 {
   "name": "umi-plugin-mobx",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha.0",
   "description": "mobx eco applying with umi",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": "https://github.com/HeskeyBaozi/umi-plugin-mobx",
   "author": "HeskeyBaozi<hezhiyu233@foxmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "rollup --config ./rollup.config.js --watch",
+    "build": "rollup --config ./rollup.config.js",
+    "example:simple": "cd examples/simple && umi dev",
+    "test": "TS_NODE_PROJECT=src/__test__/tsconfig.json mocha --require espower-typescript/guess src/__test__/**/*.spec.ts",
+    "simple": "yarn run example:simple"
+  },
+  "directories": {
+    "test": "src/__test__"
+  },
   "devDependencies": {
+    "@types/globby": "^8.0.0",
+    "@types/mocha": "^5.2.4",
+    "@types/node": "^10.5.1",
+    "@types/pluralize": "^0.0.28",
+    "@types/react": "^16.4.6",
+    "@types/webpack": "^4.4.5",
+    "espower-typescript": "^9.0.0",
+    "mocha": "^5.2.0",
+    "power-assert": "^1.6.0",
     "rollup": "^0.62.0",
+    "rollup-plugin-copy-assets": "^1.0.0",
     "rollup-plugin-typescript2": "^0.15.1",
     "typescript": "^2.9.2"
   },
   "dependencies": {
+    "globby": "^8.0.1",
     "mobx": "^5.0.3",
-    "mobx-react": "^5.2.3"
+    "mobx-react": "^5.2.3",
+    "mobx-state-tree": "^2.2.0",
+    "pluralize": "^7.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.4.1",
+    "umi": "^1.3.13"
   }
 }
