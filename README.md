@@ -1,17 +1,14 @@
 # umi-plugin-mobx
 
-<div>
-  <div style="display: flex; align-items: center;">
-  <img style="display: inline-block;" src="docs/mst-logo-gradient.svg" align="left" height="100" width="100"/>
-  <span style="margin: 0 1em; font-size: 2em;">+</span>
-  <span style="font-size: 3em; font-weight: bold;">UmiJS</span>
-  </div>
-</div>
-</br>
-
 use `mobx-state-tree` with umi gracefully.
 
-## install
+## Features
+
+- Automatically wrap route components with state tree nodes.
+- Support dynamic import state tree nodes by using `umi/dynamic`.
+- Use `Mobx` ecosystem rather than `Redux`.
+
+## Install
 
 ```bash
 yarn add umi-plugin-mobx
