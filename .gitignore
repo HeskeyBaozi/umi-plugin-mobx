@@ -7,6 +7,7 @@ examples/**/*/yarn.lock
 examples/**/*/dist/
 **/*/.umi/
 .rpt2_cache
+lib/
 
 .DS_Store
 node_modules/
