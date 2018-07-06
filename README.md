@@ -2,7 +2,7 @@
 
 😍 use `mobx-state-tree` with umi gracefully.
 
-[中文文档 Docs Chinese version]('./README_CN.md')
+[中文文档 Docs Chinese version](./README_CN.md)
 
 ## Features
 
