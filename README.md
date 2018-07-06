@@ -17,17 +17,30 @@ yarn add umi-plugin-mobx
 ## Usage
 
 ### Add plugin
+
+Add plugin to `.umirc.js` file, to ignore the model folders which are named `stores` or other custom name, you need to install `umi-plugin-routes` to tell `umi` to ignore them.
+
 ```js
 // .umirc.js
+
 export default {
   plugins: [
     ['umi-plugin-mobx', {
-      modelName: 'store',
+      modelName: 'store', // or "stores"
       exclude: [/^\$/, (filename) => filename.includes('__')]
+    }],
+    ['umi-plugin-routes', {
+      exclude: [/stores/] // ignore **/stores/**/*.*
     }]
   ]
 }
 ```
+
+```bash
+yarn add umi-plugin-routes
+```
+
+**[Deprecated]** You can also just use `page.jsx` or `page.tsx` to skip `umijs` dirctory resolving.
 
 - options
 ```ts
