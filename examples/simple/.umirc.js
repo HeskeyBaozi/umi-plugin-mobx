@@ -1,6 +1,8 @@
 export default {
   plugins: [
-    ['umi-plugin-mobx']
-  ],
-  loading: './pages/index.tsx'
+    ['umi-plugin-mobx', {
+      modelName: 'store',
+      exclude: [/^\$/, (filename) => filename.includes('__')]
+    }]
+  ]
 }
