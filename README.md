@@ -69,7 +69,7 @@ export function config() {
 }
 ```
 
-## Example:simple
+## [Example:simple](./examples/simple)
 
 Create a state-tree node.
 ```ts

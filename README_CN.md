@@ -67,7 +67,7 @@ export function config() {
 }
 ```
 
-## Example:simple
+## [Example:simple](./examples/simple)
 
 创建一个状态树节点
 ```ts
