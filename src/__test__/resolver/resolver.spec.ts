@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import { join, resolve } from 'path';
 import UmiResolver from '../../utils/resolver';
+import { normalizePath } from '../../utils/helpers';
 
 function normalizeModels(base: string) {
   return function normalize(models: string[]) {
@@ -9,11 +10,11 @@ function normalizeModels(base: string) {
 }
 
 describe('UmiResolver', () => {
-  const base = resolve(__dirname, './cases');
+  const base = normalizePath(resolve(__dirname, './cases'));
   const resolver = new UmiResolver('store');
 
   it('can get model.', () => {
-    const dir = resolve(base, './store');
+    const dir = normalizePath(resolve(base, './store'));
     const normalize = normalizeModels(dir);
     const models = normalize(resolver.getModelPaths(dir, false));
     assert.deepEqual(models, [
@@ -22,7 +23,7 @@ describe('UmiResolver', () => {
   });
 
   it('can get models from models dirctory.', () => {
-    const dir = resolve(base, './stores');
+    const dir = normalizePath(resolve(base, './stores'));
     const normalize = normalizeModels(dir);
     const models = normalize(resolver.getModelPaths(dir, false));
     assert.deepEqual(models, [
@@ -34,7 +35,7 @@ describe('UmiResolver', () => {
   });
 
   it('should pass simple tests.', () => {
-    const srcPath = resolve(base, './simple');
+    const srcPath = normalizePath(resolve(base, './simple'));
     const normalize = normalizeModels(srcPath);
     const models = normalize(resolver.getPageModelPaths({
       cwd: resolve(srcPath, './pages/problems/detail/index.tsx'),

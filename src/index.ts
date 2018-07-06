@@ -54,13 +54,13 @@ export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {
       .map(({ name, path }) => `
     const mobx${name} = (require('${path}').default);
     `.trim())
-      .join('\n')
+      .join('\n');
 
     const restContent = identifiers.map(({ name, path }) => {
       return `
     [ getType(mobx${name}).name === 'AnonymousModel' ? '${name}' : getType(mobx${name}).name ]: mobx${name},
         `.trim()
-    }).join('\n')
+    }).join('\n');
 
     const summary = `
       const mobxStores = {
@@ -71,7 +71,9 @@ export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {
     const mobxConfig = getMobxConfig();
     if (mobxConfig) {
       entryTemplateContent = entryTemplateContent
-        .replace('/*<% MOBX_CONFIG %>*/', `((require('${resolve(paths.absSrcPath, mobxConfig)}').config || (() => ({})))())`)
+        .replace('/*<% MOBX_CONFIG %>*/', `((require('${
+          normalizePath(resolve(paths.absSrcPath, mobxConfig))
+        }').config || (() => ({})))())`)
     }
 
     entryTemplateContent = entryTemplateContent
