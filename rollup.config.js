@@ -25,7 +25,10 @@ export default [
       format: 'es'
     },
     plugins: [
-      typescript()
+      typescript(),
+      copy({
+        assets: ['./src/template']
+      })
     ],
     external: ['path', 'fs', 'globby', 'pluralize', 'react', 'react-dom', 'mobx', 'mobx-react', 'mobx-state-tree']
   }
