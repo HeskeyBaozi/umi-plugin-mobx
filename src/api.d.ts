@@ -22,7 +22,7 @@ export interface PlaceHolder {
   HISTORY_MODIFIER: string;
 }
 
-export type RegisterableHooks = 'generateFiles' | 'modifyEntryFile' | 'modifyAFWebpackOpts' | 'modifyRouteComponent' | 'modifyRouterFile';
+export type RegisterableHooks = 'generateFiles' | 'modifyEntryFile' | 'modifyAFWebpackOpts' | 'modifyRouteComponent' | 'modifyRouterFile' | 'modifyPageWatchers';
 
 export interface ReducerArg<M, A> {
   memo: M;

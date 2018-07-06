@@ -2,6 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 import { getType, IStateTreeNode } from 'mobx-state-tree';
+import { runInAction } from 'mobx';
 
 export default function getHoc(stores: {
   [key: string]: () => Promise<IStateTreeNode>

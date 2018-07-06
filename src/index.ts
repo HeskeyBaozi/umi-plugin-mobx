@@ -2,7 +2,8 @@ import { PluginAPI, ReducerArg, AfWebpackOptions, PluginOptions } from './api';
 import { resolve, join } from 'path';
 import { readFileSync, writeFileSync } from 'fs';
 import UmiResolver from './utils/resolver';
-import { normalizePath, getName, chunkName } from './utils/helpers';
+import { sync } from 'globby';
+import { normalizePath, getName, chunkName, transformWord } from './utils/helpers';
 
 export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {}) {
   const { RENDER, IMPORT } = api.placeholder;
@@ -19,6 +20,15 @@ export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {
   }
 
   const umiResolver = new UmiResolver(modelName);
+  const pluralName = transformWord(modelName, false);
+  const singularName = transformWord(modelName, true);
+
+  function getMobxConfig() {
+    const mobxs = sync('./mobx.{ts,js,tsx,jsx}', { cwd: paths.absSrcPath });
+    if (mobxs.length) {
+      return normalizePath(mobxs[0]);
+    }
+  }
 
   api.register('generateFiles', ({ memo, args }) => {
 
@@ -58,7 +68,14 @@ export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {
   };
       `.trim();
 
+    const mobxConfig = getMobxConfig();
+    if (mobxConfig) {
+      entryTemplateContent = entryTemplateContent
+        .replace('/*<% MOBX_CONFIG %>*/', `((require('${resolve(paths.absSrcPath, mobxConfig)}').config || (() => ({})))())`)
+    }
+
     entryTemplateContent = entryTemplateContent
+      .replace('/*<% MOBX_CONFIG %>*/', `{}`)
       .replace('/*<% MOBX_STORES %>*/', `
     ${identifiersContent}\n${summary}
     `.trim())
@@ -125,7 +142,7 @@ ${IMPORT}`.trim());
     webpackChunkName: string,
     config: PluginAPI['service']['config']
   }>) => {
-    const { pageJSFile, importPath, webpackChunkName, config } = args;
+    const { pageJSFile, webpackChunkName, config } = args;
     if (!webpackChunkName) {
       return memo;
     }
@@ -154,14 +171,29 @@ ${IMPORT}`.trim());
             const importTarget = shouldImportDynamic ? `import(/* webpackChunkName: '${chunkName(
               paths.cwd,
               path,
-            )}' */ '${pageJSFile}')` : `require(/* webpackChunkName: '${chunkName(
+            )}' */ '${path}')` : `require(/* webpackChunkName: '${chunkName(
               paths.cwd,
               path,
-            )}' */ '${pageJSFile}').default`;
+            )}' */ '${path}').default`;
             return `['${name}']: () => ${importTarget},`;
           }).join('\n')
       );
 
     return memo;
+  });
+
+  api.register('modifyPageWatchers', ({ memo, args }: ReducerArg<string[], undefined>) => {
+    return [
+      ...memo,
+      join(paths.absSrcPath, pluralName),
+      join(paths.absSrcPath, singularName + '.js'),
+      join(paths.absSrcPath, singularName + '.jsx'),
+      join(paths.absSrcPath, singularName + '.ts'),
+      join(paths.absSrcPath, singularName + '.tsx'),
+      join(paths.absSrcPath, 'mobx.js'),
+      join(paths.absSrcPath, 'mobx.jsx'),
+      join(paths.absSrcPath, 'mobx.ts'),
+      join(paths.absSrcPath, 'mobx.tsx')
+    ];
   });
 }
