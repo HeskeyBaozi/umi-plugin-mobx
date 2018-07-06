@@ -1,3 +1,4 @@
+// tslint:disable
 import { types, flow } from 'mobx-state-tree';
 
 export const Item = types

@@ -1,3 +1,4 @@
+// tslint:disable
 import * as React from 'react';
 
 export default class OneUser extends React.Component<{}> {

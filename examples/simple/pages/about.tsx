@@ -1,3 +1,4 @@
+// tslint:disable
 import * as React from 'react';
 import { observer, inject } from 'mobx-react';
 import { UserType } from '../stores/user';
