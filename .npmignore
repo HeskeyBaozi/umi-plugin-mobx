@@ -3,7 +3,6 @@ node_modules/
 .idea/
 
 **/*/node_modules/
-examples/**/*/yarn.lock
 examples/**/*/dist/
 **/*/.umi/
 .rpt2_cache
