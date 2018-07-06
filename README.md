@@ -9,6 +9,7 @@
 - Automatically wrap route components with state tree nodes.
 - Support dynamic import state tree nodes by using `umi/dynamic`.
 - Use Mobx ecosystem rather than Redux.
+- Resolve rules are same with `umi-plugin-dva`, so you just export a state tree node by default.
 
 ## Install
 
@@ -118,6 +119,10 @@ const User = types
 
 export type UserType = typeof User.Type;
 
+
+/**
+ * YOU SHOULD EXPORT A STATE TREE NODE BY DEFAULT!
+ **/
 export default User.create({
   firstName: 'Heskey',
   lastName: 'Baozi',

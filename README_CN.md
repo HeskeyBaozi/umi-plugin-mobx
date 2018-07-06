@@ -7,6 +7,7 @@
 - 使用状态树节点自动包裹路由组件（通过高阶组件形式），提供页面纬度的数据状态流。
 - 通过封装`umi/dynamic`动态加载状态树节点。
 - Redux是不是写的很烦？快来试试Mobx和其最佳实践`mobx-state-tree`，开箱即用。
+- 模型解析规则和`umi-plugin-dva`一致，你只需要默认导出一个状态树节点实例即可。
 
 ## Install
 
@@ -116,6 +117,11 @@ const User = types
 
 export type UserType = typeof User.Type;
 
+
+
+/**
+ * 你必须默认导出一个状态树节点实例
+ **/
 export default User.create({
   firstName: 'Heskey',
   lastName: 'Baozi',
