@@ -1,14 +1,12 @@
 # umi-plugin-mobx
 
-😍 use `mobx-state-tree` with umi gracefully.
-
-[中文文档 Docs Chinese version]('./README_CN.md')
+😍 优雅地使用`mobx-state-tree`响应式数据流生态来整合`umi`。
 
 ## Features
 
-- Automatically wrap route components with state tree nodes.
-- Support dynamic import state tree nodes by using `umi/dynamic`.
-- Use Mobx ecosystem rather than Redux.
+- 使用状态树节点自动包裹路由组件（通过高阶组件形式），提供页面纬度的数据状态流。
+- 通过封装`umi/dynamic`动态加载状态树节点。
+- Redux是不是写的很烦？快来试试Mobx和其最佳实践`mobx-state-tree`，开箱即用。
 
 ## Install
 
@@ -20,7 +18,7 @@ yarn add umi-plugin-mobx
 
 ### Add plugin
 
-Add plugin to `.umirc.js` file, to ignore the model folders which are named `stores` or other custom name, you need to install `umi-plugin-routes` to tell `umi` to ignore them.
+在`.umirc.js`文件中添加该插件，注意`umi`会自动读取`stores`文件夹作为路由（`stores`文件夹名字可自定义），为了跳过它，使用`umi-plugin-routes`来进行相应配置。
 
 ```js
 // .umirc.js
@@ -28,11 +26,11 @@ Add plugin to `.umirc.js` file, to ignore the model folders which are named `sto
 export default {
   plugins: [
     ['umi-plugin-mobx', {
-      modelName: 'store', // or "stores", defaults to "store", you can set "model" like dva.
+      modelName: 'store', // 或者写复数形式皆可 "stores", 默认值为 "store", 你也可以像使用dva一样命名为 "model"。
       exclude: [/^\$/, (filename) => filename.includes('__')]
     }],
     ['umi-plugin-routes', {
-      exclude: [/stores/] // ignore **/stores/**/*.*, you can set /models/ like dva.
+      exclude: [/stores/] // 忽略目录 **/stores/**/*.*, 你也可以像使用dva一样设置为 /models/ 。
     }]
   ]
 }
@@ -42,9 +40,9 @@ export default {
 yarn add umi-plugin-routes
 ```
 
-**[Deprecated]** You can also just use `page.jsx` or `page.tsx` to skip `umijs` dirctory resolving.
+**[不建议]** 你也通过目录下的 `page.jsx` 或 `page.tsx` 文件来跳过 `umijs` 的目录解析。
 
-- options
+- 插件配置选项
 ```ts
 interface PluginOptions {
   modelName?: string;
@@ -60,17 +58,17 @@ type TestFn = (filename: string) => boolean;
 Mobx [config documents](https://github.com/mobxjs/mobx/blob/gh-pages/docs/refguide/api.md#configure)
 ```js
 // src/mobx.ts
-// or src/mobx.js
+// 或者 src/mobx.js
 export function config() {
   return {
-    enforceActions: true // or 'strict' for strict-mode
+    enforceActions: true // 或者设置为 'strict' 来启用严格模式
   };
 }
 ```
 
 ## Example:simple
 
-Create a state-tree node.
+创建一个状态树节点
 ```ts
 // src/stores/user.ts
 
@@ -128,7 +126,7 @@ export default User.create({
 ```
 
 
-Create an observer and inject the state-tree node.
+创建一个观察者，并且注入状态树节点
 ```tsx
 // src/pages/about.tsx
 
