@@ -1,9 +1,9 @@
-import { PluginAPI, ReducerArg, AfWebpackOptions, PluginOptions } from './api';
+import { PluginAPI, ReducerArg, AfWebpackOptions, PluginOptions, Excludes } from './api';
 import { resolve, join } from 'path';
 import { readFileSync, writeFileSync } from 'fs';
 import UmiResolver from './utils/resolver';
 import { sync } from 'globby';
-import { normalizePath, getName, chunkName, transformWord } from './utils/helpers';
+import { normalizePath, getName, chunkName, transformWord, optsToArray } from './utils/helpers';
 
 export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {}) {
   const { RENDER, IMPORT } = api.placeholder;
@@ -11,13 +11,6 @@ export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {
   const isProduction = process.env.NODE_ENV === 'production';
   const shouldImportDynamic = isProduction && !config.disableDynamicImport;
   let { modelName = 'store', exclude = [/^\$/] } = options;
-  if (!exclude || !Array.isArray(exclude)) {
-    exclude = [];
-  };
-
-  if (exclude instanceof RegExp) {
-    exclude = [exclude];
-  }
 
   const umiResolver = new UmiResolver(modelName);
   const pluralName = transformWord(modelName, false);
@@ -30,6 +23,22 @@ export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {
     }
   }
 
+  function useExclude(models: string[], excludes: Excludes) {
+    return models.filter(model => {
+      for (const exclude of excludes) {
+        if (typeof exclude === 'function' && exclude(getName(model))) {
+          return false;
+        }
+        if (exclude instanceof RegExp && exclude.test(getName(model))) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }
+
+  const excluesList = optsToArray(exclude);
+
   api.register('generateFiles', ({ memo, args }) => {
 
     let entryTemplateContent = readFileSync(
@@ -41,7 +50,7 @@ export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {
       absPagesPath: api.service.paths.absPagesPath,
       config: api.service.config
     });
-    const identifiers = UmiResolver.exclude(modelPaths, exclude)
+    const identifiers = useExclude(modelPaths, excluesList)
       .map((path) => ({
         name: getName(path),
         path
@@ -73,7 +82,7 @@ export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {
       entryTemplateContent = entryTemplateContent
         .replace('/*<% MOBX_CONFIG %>*/', `((require('${
           normalizePath(resolve(paths.absSrcPath, mobxConfig))
-        }').config || (() => ({})))())`)
+          }').config || (() => ({})))())`)
     }
 
     entryTemplateContent = entryTemplateContent
@@ -161,13 +170,13 @@ ${IMPORT}`.trim());
     }, ${loadingComponent})(${memo})`
       .replace(
         '<% STORES %>',
-        umiResolver
+        useExclude(umiResolver
           .getPageModelPaths({
             cwd: join(paths.absTmpDirPath, pageJSFile),
             absPagesPath: paths.absPagesPath,
             absSrcPath: paths.absSrcPath,
             singular: config.singular
-          })
+          }), excluesList)
           .map((path) => {
             const name = getName(path);
             const importTarget = shouldImportDynamic ? `import(/* webpackChunkName: '${chunkName(

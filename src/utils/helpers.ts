@@ -8,6 +8,15 @@ export function transformWord(word: string, toSingular: boolean) {
   }
 }
 
+export function optsToArray(item: any) {
+  if (!item) return [];
+  if (Array.isArray(item)) {
+    return item;
+  } else {
+    return [item];
+  }
+}
+
 export function normalizePath(path: string, stripTrailing?: boolean) {
   if (typeof path !== 'string') {
     throw new TypeError('expected path to be a string');

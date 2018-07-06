@@ -69,132 +69,71 @@ export function config() {
 }
 ```
 
+## [Example:user-dashboard](./examples/user-dashboard)
 ## [Example:simple](./examples/simple)
 
-Create a state-tree node.
-```ts
-// src/stores/user.ts
+### How to run examples?
 
-import { types, flow } from 'mobx-state-tree';
-
-export const Item = types
-  .model('item', {
-    key: types.string,
-    content: types.string
-  });
-
-type ItemSnapshotType = typeof Item.SnapshotType;
-
-const User = types
-  .model({
-    firstName: types.string,
-    lastName: types.string,
-    age: types.number,
-    list: types.array(Item)
-  })
-  .views((self) => ({
-    get name() {
-      return self.firstName + ' ' + self.lastName;
-    }
-  }))
-  .volatile((self) => ({
-    uid: 0
-  }))
-  .actions((self) => ({
-    changeFirstName(str: string) {
-      self.firstName = str;
-    },
-    addListItemAsync: flow(function* addListItemAsync() {
-      const currentUid = self.uid++;
-      const item: ItemSnapshotType = yield new Promise<ItemSnapshotType>((resolve) => setTimeout(() => {
-        resolve({
-          key: 'item-' + currentUid,
-          content: 'this is content...'
-        });
-      }, 1000));
-      self.list.push(Item.create(item));
-    })
-  }))
-
-
-export type UserType = typeof User.Type;
-
-
-/**
- * YOU SHOULD EXPORT A STATE TREE NODE BY DEFAULT!
- **/
-export default User.create({
-  firstName: 'Heskey',
-  lastName: 'Baozi',
-  age: 20,
-  list: []
-});
-
+If you want to run user-dashboard...
+```bash
+git clone https://github.com/HeskeyBaozi/umi-plugin-mobx
+cd umi-plugin-mobx
+yarn install
+yarn link
+cd examples/user-dashboard
+yarn install
+yarn link umi-plugin-mobx
+yarn start
 ```
 
+MST Node Example:
+```ts
+// examples/user-dashboard/src/pages/users/stores/users.ts
+// mobx-state-tree version like dva's model.
+// dva version: https://github.com/umijs/umi-dva-user-dashboard/blob/master/src/pages/users/models/users.js
 
-Create an observer and inject the state-tree node.
-```tsx
-// src/pages/about.tsx
+import { AxiosResponse } from 'axios';
+import { applyAction, flow, types } from 'mobx-state-tree';
+import { Loading } from '../../../stores/$loading';
+import { $ } from '../../../utils';
+import { User } from './$user';
 
-import * as React from 'react';
-import { observer, inject } from 'mobx-react';
-import { UserType } from '../stores/user';
-import { observable, action, computed } from 'mobx';
+const Users = types
+  .compose(Loading, types.model({
+    list: types.array(User),
+    total: types.maybe(types.number),
+    page: types.maybe(types.number)
+  }))
+  .named('users')
+  .volatile((self) => {
+    return {
+      PAGE_SIZE: 5
+    };
+  })
+  .actions((self) => {
+    return {
+      fetchAsync: flow(function* fetchAsync({ page }: { page: number }) {
+        const { data, headers }: AxiosResponse<any[]> = yield $.get(`/users?_page=${page}&_limit=${self.PAGE_SIZE}`);
+        self.list.clear();
+        self.list.push(...data);
+        self.total = Number.parseInt(headers['x-total-count']);
+        self.page = page;
+      }),
+      removeAsync: flow(function* removeAsync({ id }: { id: number }) {
+        yield $.delete(`/users/${id}`);
+      }),
+      updateAsync: flow(function* updateAsync({ id, values }: { id: number, values: object }) {
+        yield $.patch(`/users/${id}`, JSON.stringify(values));
+      }),
+      createAsync: flow(function* createAsync({ values }: { values: object }) {
+        yield $.post(`/users`, JSON.stringify(values));
+      })
+    };
+  });
 
-interface AboutProps {
-  user?: UserType;
-}
-
-@inject('user')
-@observer
-export default class About extends React.Component<AboutProps> {
-
-  @observable
-  count = 15;
-
-  @action
-  handleChangeInput: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    this.props.user!.changeFirstName(e.currentTarget.value)
-  }
-
-  @action
-  up = () => {
-    console.log('click to ', this.count);
-    this.count++;
-  }
-
-  handleClickAddItem: React.MouseEventHandler<HTMLButtonElement> = async () => {
-    const { user } = this.props;
-    await user!.addListItemAsync();
-    console.log('add, uid = ', user!.uid);
-  }
-
-  @computed
-  get List() {
-    const { user } = this.props;
-    return user!.list.map((item) => (
-      <li key={ item.key }>
-        [{ item.key }]: { item.content }
-      </li>
-    ));
-  }
-
-
-  render() {
-    return (
-      <div>
-        <h1>About</h1>
-        <p>Name: { this.props.user!.name }</p>
-        <input type="text" value={ this.props.user!.firstName } onChange={ this.handleChangeInput } />
-        <p>count: { this.count }</p>
-        <button onClick={ this.up }>count++</button>
-        <p>List: <button onClick={ this.handleClickAddItem }>Add Item</button></p>
-        <ul>
-          { this.List }
-        </ul>
-      </div>
-    );
-  }
-}
+export type UsersType = typeof Users.Type;
+export default Users.create({
+  list: [],
+  total: null
+});
 ```

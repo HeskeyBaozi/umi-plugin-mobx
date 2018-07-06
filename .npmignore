@@ -7,6 +7,7 @@ examples/**/*/dist/
 **/*/.umi/
 .rpt2_cache
 src/
+examples/
 
 .DS_Store
 node_modules/

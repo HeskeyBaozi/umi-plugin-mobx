@@ -1,7 +1,6 @@
 import { sync } from 'globby';
 import { transformWord, normalizePath, endWithSlash } from './helpers';
 import { join, dirname } from 'path';
-import { Excludes } from '../api';
 const uniq = require('lodash.uniq');
 
 
@@ -65,22 +64,6 @@ export default class UmiResolver {
       cwd = dirname(cwd);
     }
     return uniq(modelPaths);
-  }
-
-  static exclude(paths: string[], tests: Excludes) {
-    return paths.filter((path) => {
-      for (const test of tests) {
-        const name = path.split('/').pop() || '';
-        if (test instanceof RegExp && test.test(name)) {
-          return false;
-        } else {
-          if (typeof test === 'function' && test(name)) {
-            return false;
-          }
-        }
-      }
-      return true;
-    });
   }
 }
 
