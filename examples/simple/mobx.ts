@@ -1,5 +1,5 @@
 export function config() {
   return {
-    enforceActions: 'strict'
+    enforceActions: true
   };
 }
