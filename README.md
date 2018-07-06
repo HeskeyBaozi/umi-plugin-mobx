@@ -16,7 +16,7 @@ yarn add umi-plugin-mobx
 
 ## Usage
 
-### add plugin
+### Add plugin
 ```js
 // .umirc.js
 export default {
@@ -29,7 +29,19 @@ export default {
 }
 ```
 
-### config mobx
+- options
+```ts
+interface PluginOptions {
+  modelName?: string;
+  exclude?: Excludes;
+}
+
+type Excludes = (RegExp | TestFn)[]
+type TestFn = (filename: string) => boolean;
+```
+
+
+### Config mobx
 
 Mobx [config documents](https://github.com/mobxjs/mobx/blob/gh-pages/docs/refguide/api.md#configure)
 ```js

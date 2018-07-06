@@ -33,11 +33,11 @@ export interface AfWebpackOptions {
   alias: Resolve['alias'];
 }
 
-export type TestFn = (k: string) => boolean;
+export type TestFn = (filename: string) => boolean;
 export type Excludes = (RegExp | TestFn)[]
 
 export interface PluginOptions {
-  modelName?: 'model' | 'store';
+  modelName?: string;
   exclude?: Excludes;
 }
 
