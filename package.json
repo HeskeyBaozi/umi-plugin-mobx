@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-mobx",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.2.1",
   "description": "mobx eco applying with umi",
   "main": "lib/index.js",
   "repository": "https://github.com/HeskeyBaozi/umi-plugin-mobx",
