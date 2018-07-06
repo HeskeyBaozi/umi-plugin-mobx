@@ -36,3 +36,25 @@ export function normalizePath(path: string, stripTrailing?: boolean) {
   }
   return prefix + segs.join('/');
 }
+
+export function endWithSlash(path: string) {
+  return path.slice(-1) !== '/' ? `${path}/` : path;
+}
+
+export function getName(path: string) {
+  return (path.split('/').pop() || '').replace(/\..+$/, '');
+}
+
+export function chunkName(cwd: string, path: string) {
+  return stripFirstSlash(normalizePath(path).replace(normalizePath(cwd), '')).replace(
+    /\//g,
+    '__',
+  );
+}
+function stripFirstSlash(path: string) {
+  if (path.charAt(0) === '/') {
+    return path.slice(1);
+  } else {
+    return path;
+  }
+}

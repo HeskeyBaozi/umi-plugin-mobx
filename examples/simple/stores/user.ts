@@ -17,6 +17,11 @@ const User = types
     get name() {
       return self.firstName + ' ' + self.lastName;
     }
+  }))
+  .actions((self) => ({
+    changeFirstName(str: string) {
+      self.firstName = str;
+    }
   }));
 
 const user = User.create({
@@ -26,6 +31,6 @@ const user = User.create({
   list: []
 });
 
-console.log(user);
+export type UserType = typeof User.Type;
 
 export default user;

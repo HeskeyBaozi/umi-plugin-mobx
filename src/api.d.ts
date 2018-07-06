@@ -4,9 +4,13 @@ export interface Service {
   paths: {
     absTmpDirPath: string;
     absSrcPath: string;
+    cwd: string;
+    absPagesPath: string;
   },
   config: {
     singular: boolean;
+    loading: string;
+    disableDynamicImport: boolean;
   }
 }
 
@@ -18,7 +22,7 @@ export interface PlaceHolder {
   HISTORY_MODIFIER: string;
 }
 
-export type RegisterableHooks = 'generateFiles' | 'modifyEntryFile' | 'modifyAFWebpackOpts';
+export type RegisterableHooks = 'generateFiles' | 'modifyEntryFile' | 'modifyAFWebpackOpts' | 'modifyRouteComponent' | 'modifyRouterFile';
 
 export interface ReducerArg<M, A> {
   memo: M;

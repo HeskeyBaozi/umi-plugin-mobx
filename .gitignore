@@ -4,6 +4,7 @@ node_modules/
 
 **/*/node_modules/
 examples/**/*/yarn.lock
+examples/**/*/dist/
 **/*/.umi/
 .rpt2_cache
 

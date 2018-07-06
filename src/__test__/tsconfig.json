@@ -4,6 +4,7 @@
     "module": "commonjs",
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
-    "allowJs": true
+    "allowJs": true,
+    "sourceMap": true
   }
 }

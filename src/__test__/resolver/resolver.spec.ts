@@ -31,5 +31,32 @@ describe('UmiResolver', () => {
       '$CWD$/stores/user.ts',
       '$CWD$/stores/user.tsx',
     ]);
-  })
+  });
+
+  it('should pass simple tests.', () => {
+    const srcPath = resolve(base, './simple');
+    const normalize = normalizeModels(srcPath);
+    const models = normalize(resolver.getPageModelPaths({
+      cwd: resolve(srcPath, './pages/problems/detail/index.tsx'),
+      absPagesPath: resolve(srcPath, './pages'),
+      absSrcPath: srcPath,
+      singular: false
+    }));
+
+    assert.deepEqual(models, [
+      '$CWD$/pages/problems/detail/stores/problem-detail.ts',
+      '$CWD$/pages/problems/stores/problems.ts'
+    ]);
+
+    const models2 = normalize(resolver.getGlobalModelPaths({
+      absSrcPath: srcPath,
+      absPagesPath: resolve(srcPath, './pages'),
+      config: { singular: false }
+    }));
+
+    assert.deepEqual(models2, [
+      '$CWD$/stores/global.ts',
+      '$CWD$/pages/stores/global-inner-pages.ts'
+    ]);
+  });
 });

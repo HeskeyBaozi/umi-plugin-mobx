@@ -2,10 +2,13 @@ import { PluginAPI, ReducerArg, AfWebpackOptions, PluginOptions } from './api';
 import { resolve, join } from 'path';
 import { readFileSync, writeFileSync } from 'fs';
 import UmiResolver from './utils/resolver';
+import { normalizePath, getName, chunkName } from './utils/helpers';
 
 export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {}) {
-  const { RENDER } = api.placeholder;
-  const { paths } = api.service;
+  const { RENDER, IMPORT } = api.placeholder;
+  const { paths, config } = api.service;
+  const isProduction = process.env.NODE_ENV === 'production';
+  const shouldImportDynamic = isProduction && !config.disableDynamicImport;
   let { modelName = 'store', exclude = [/^\$/] } = options;
   if (!exclude || !Array.isArray(exclude)) {
     exclude = [];
@@ -25,11 +28,12 @@ export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {
 
     const modelPaths = umiResolver.getGlobalModelPaths({
       absSrcPath: api.service.paths.absSrcPath,
+      absPagesPath: api.service.paths.absPagesPath,
       config: api.service.config
     });
     const identifiers = UmiResolver.exclude(modelPaths, exclude)
       .map((path) => ({
-        name: (path.split('/').pop() || '').replace(/\..+$/, ''),
+        name: getName(path),
         path
       }))
       .filter((_) => _.name);
@@ -42,28 +46,33 @@ export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {
     `.trim())
       .join('\n')
 
-      const restContent = identifiers.map(({ name, path }) => {
-        return `
-        [getType(mobx${name}).name === 'AnonymousModel' ? '${name}' : getType(mobx${name}).name]: mobx${name},
+    const restContent = identifiers.map(({ name, path }) => {
+      return `
+    [ getType(mobx${name}).name === 'AnonymousModel' ? '${name}' : getType(mobx${name}).name ]: mobx${name},
         `.trim()
-      }).join('\n')
+    }).join('\n')
 
     const summary = `
       const mobxStores = {
         ${restContent}
-      };
+  };
       `.trim();
 
     entryTemplateContent = entryTemplateContent
       .replace('/*<% MOBX_STORES %>*/', `
-    ${identifiersContent}
-    ${summary}
+    ${identifiersContent}\n${summary}
     `.trim())
       .replace('/*<% GLOBAL_MODELS %>*/', '{ ...mobxStores },');
 
     writeFileSync(
       join(paths.absTmpDirPath, './MobxProviderEntry.js'),
       entryTemplateContent,
+      'utf8'
+    );
+
+    writeFileSync(
+      join(paths.absTmpDirPath, './withProvider.js'),
+      readFileSync(resolve(__dirname, './withProvider.js'), { encoding: 'utf8' }),
       'utf8'
     );
 
@@ -99,6 +108,60 @@ export default function umiPluginMobx(api: PluginAPI, options: PluginOptions = {
       'mobx-react': require.resolve('mobx-react'),
       'mobx-state-tree': require.resolve('mobx-state-tree')
     };
+    return memo;
+  });
+
+  api.register('modifyRouterFile', ({ memo }: ReducerArg<string, undefined>) => {
+    return memo
+      .replace(IMPORT, `
+import getHoc from './withProvider';
+${IMPORT}`.trim());
+  });
+
+  api.register('modifyRouteComponent', ({ memo, args }: ReducerArg<string, {
+    isCompiling: boolean,
+    pageJSFile: string,
+    importPath: string,
+    webpackChunkName: string,
+    config: PluginAPI['service']['config']
+  }>) => {
+    const { pageJSFile, importPath, webpackChunkName, config } = args;
+    if (!webpackChunkName) {
+      return memo;
+    }
+
+    let loadingComponent = '';
+    if (config.loading) {
+      loadingComponent = `require('${normalizePath(
+        join(paths.cwd, config.loading),
+      )}').default`;
+    }
+
+    memo = `getHoc({
+      <% STORES %>
+    }, ${loadingComponent})(${memo})`
+      .replace(
+        '<% STORES %>',
+        umiResolver
+          .getPageModelPaths({
+            cwd: join(paths.absTmpDirPath, pageJSFile),
+            absPagesPath: paths.absPagesPath,
+            absSrcPath: paths.absSrcPath,
+            singular: config.singular
+          })
+          .map((path) => {
+            const name = getName(path);
+            const importTarget = shouldImportDynamic ? `import(/* webpackChunkName: '${chunkName(
+              paths.cwd,
+              path,
+            )}' */ '${pageJSFile}')` : `require(/* webpackChunkName: '${chunkName(
+              paths.cwd,
+              path,
+            )}' */ '${pageJSFile}').default`;
+            return `['${name}']: () => ${importTarget},`;
+          }).join('\n')
+      );
+
     return memo;
   });
 }
