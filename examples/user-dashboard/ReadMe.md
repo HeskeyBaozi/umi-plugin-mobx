@@ -10,6 +10,6 @@ yarn start
 
 ## Preview
 
-![1](./docs/dash-1)
+![1](./docs/dash-1.png)
 
-![2](./docs/dash-2)
+![2](./docs/dash-2.png)

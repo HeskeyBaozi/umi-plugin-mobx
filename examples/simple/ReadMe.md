@@ -10,4 +10,4 @@ yarn start
 
 ## Preview
 
-![1](./docs/simple-1)
+![1](./docs/simple-1.png)
