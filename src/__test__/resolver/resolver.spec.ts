@@ -1,12 +1,12 @@
 import * as assert from 'assert';
-import { join, resolve } from 'path';
-import UmiResolver from '../../utils/resolver';
+import { resolve } from 'path';
 import { normalizePath } from '../../utils/helpers';
+import UmiResolver from '../../utils/resolver';
 
 function normalizeModels(base: string) {
   return function normalize(models: string[]) {
-    return models.map(model => model.replace(base, '$CWD$'));
-  }
+    return models.map((model) => model.replace(base, '$CWD$'));
+  };
 }
 
 describe('UmiResolver', () => {
@@ -30,7 +30,7 @@ describe('UmiResolver', () => {
       '$CWD$/stores/user.js',
       '$CWD$/stores/user.jsx',
       '$CWD$/stores/user.ts',
-      '$CWD$/stores/user.tsx',
+      '$CWD$/stores/user.tsx'
     ]);
   });
 

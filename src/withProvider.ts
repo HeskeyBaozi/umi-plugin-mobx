@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 import { getType, IStateTreeNode } from 'mobx-state-tree';
-import { runInAction } from 'mobx';
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
-export default function getHoc(stores: {
-  [key: string]: () => Promise<IStateTreeNode>
-}, loading: React.ComponentType<any> = () => null) {
+interface IStores {
+  [key: string]: () => Promise<IStateTreeNode>;
+}
+
+export default function getHoc(stores: IStores, loading: React.ComponentType<any> = () => null) {
   return function withProvider<P>(routeComponent: React.ComponentType<RouteComponentProps<P>>) {
 
-    class withRouterComponent extends React.Component<RouteComponentProps<P>> {
-
+    class WithRouterComponent extends React.Component<RouteComponentProps<P>> {
       mounted: boolean = false;
       Loading: React.ComponentType<any> = loading;
       state: {
@@ -21,17 +21,17 @@ export default function getHoc(stores: {
           resolvedStores: null
         };
 
+      constructor(props: any) {
+        super(props);
+        this.load();
+      }
+
       componentDidMount() {
         this.mounted = true;
       }
 
       componentWillUnmount() {
         this.mounted = false;
-      }
-
-      constructor(props: any) {
-        super(props);
-        this.load();
       }
 
       async load() {
@@ -85,8 +85,8 @@ export default function getHoc(stores: {
       }
     }
 
-    (withRouterComponent as React.ComponentClass<RouteComponentProps<P>>).displayName = 'withRouterComponent';
+    (WithRouterComponent as React.ComponentClass<RouteComponentProps<P>>).displayName = 'withRouterComponent';
 
-    return withRouterComponent as React.ComponentClass<RouteComponentProps<P>>;
-  }
+    return WithRouterComponent as React.ComponentClass<RouteComponentProps<P>>;
+  };
 }

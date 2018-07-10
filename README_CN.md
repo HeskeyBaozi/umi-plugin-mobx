@@ -21,6 +21,11 @@ yarn add umi-plugin-mobx
 
 在`.umirc.js`文件中添加该插件，注意`umi`会自动读取`stores`文件夹作为路由（`stores`文件夹名字可自定义），为了跳过它，使用`umi-plugin-routes`来进行相应配置。
 
+安装 `umi-plugin-routes`.
+```bash
+yarn add umi-plugin-routes
+```
+
 ```js
 // .umirc.js
 
@@ -67,8 +72,10 @@ export function config() {
 }
 ```
 
-## [Example:user-dashboard](./examples/user-dashboard)
-## [Example:simple](./examples/simple)
+## Examples
+
+- [Example:user-dashboard](./examples/user-dashboard) (推荐)
+- [Example:simple](./examples/simple)
 
 ### 如何运行示例？
 
@@ -80,7 +87,7 @@ yarn install
 yarn link
 cd examples/user-dashboard
 yarn install
-yarn link umi-plugin-mobx
+yarn link "umi-plugin-mobx"
 yarn start
 ```
 

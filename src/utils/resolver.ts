@@ -1,8 +1,8 @@
 import { sync } from 'globby';
-import { transformWord, normalizePath, endWithSlash } from './helpers';
-import { join, dirname } from 'path';
+import { dirname, join } from 'path';
+import { endWithSlash, normalizePath, transformWord } from './helpers';
+// tslint:disable-next-line:no-var-requires
 const uniq = require('lodash.uniq');
-
 
 /**
  * Use the rule which is same with umi-plugin-dva.
@@ -11,11 +11,14 @@ const uniq = require('lodash.uniq');
 export default class UmiResolver {
 
   targetName: string;
+  pluralName: string;
+  singularName: string;
 
   constructor(targetName: string) {
     this.targetName = targetName;
+    this.pluralName = transformWord(targetName, false);
+    this.singularName = transformWord(targetName, true);
   }
-
 
   getModelPaths(cwd: string, singular: boolean) {
     const singularModel = sync(
@@ -65,6 +68,11 @@ export default class UmiResolver {
     }
     return uniq(modelPaths);
   }
+
+  getMobxConfig(cwd: string) {
+    const mobxs = sync('./mobx.{ts,js,tsx,jsx}', { cwd });
+    if (mobxs.length) {
+      return normalizePath(mobxs[0]);
+    }
+  }
 }
-
-

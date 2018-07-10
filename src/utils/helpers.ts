@@ -1,4 +1,5 @@
-import { plural, isPlural, singular } from 'pluralize';
+import { isPlural, plural, singular } from 'pluralize';
+import { Excludes } from '../api';
 
 export function transformWord(word: string, toSingular: boolean) {
   if (isPlural(word)) {
@@ -8,8 +9,8 @@ export function transformWord(word: string, toSingular: boolean) {
   }
 }
 
-export function optsToArray(item: any) {
-  if (!item) return [];
+export function optsToArray(item: any): Excludes {
+  if (!item) { return []; }
   if (Array.isArray(item)) {
     return item;
   } else {
@@ -22,24 +23,24 @@ export function normalizePath(path: string, stripTrailing?: boolean) {
     throw new TypeError('expected path to be a string');
   }
 
-  if (path === '\\' || path === '/') return '/';
+  if (path === '\\' || path === '/') { return '/'; }
 
-  let len = path.length;
-  if (len <= 1) return path;
+  const len = path.length;
+  if (len <= 1) { return path; }
 
   // ensure that win32 namespaces has two leading slashes, so that the path is
   // handled properly by the win32 version of path.parse() after being normalized
   // https://msdn.microsoft.com/library/windows/desktop/aa365247(v=vs.85).aspx#namespaces
   let prefix = '';
   if (len > 4 && path[3] === '\\') {
-    var ch = path[2];
+    const ch = path[2];
     if ((ch === '?' || ch === '.') && path.slice(0, 2) === '\\\\') {
       path = path.slice(2);
       prefix = '//';
     }
   }
 
-  let segs = path.split(/[/\\]+/);
+  const segs = path.split(/[/\\]+/);
   if (stripTrailing !== false && segs[segs.length - 1] === '') {
     segs.pop();
   }
@@ -57,7 +58,7 @@ export function getName(path: string) {
 export function chunkName(cwd: string, path: string) {
   return stripFirstSlash(normalizePath(path).replace(normalizePath(cwd), '')).replace(
     /\//g,
-    '__',
+    '__'
   );
 }
 function stripFirstSlash(path: string) {
@@ -66,4 +67,18 @@ function stripFirstSlash(path: string) {
   } else {
     return path;
   }
+}
+
+export function useExclude(models: string[], excludes: Excludes) {
+  return models.filter((model) => {
+    for (const exclude of excludes) {
+      if (typeof exclude === 'function' && exclude(getName(model))) {
+        return false;
+      }
+      if (exclude instanceof RegExp && exclude.test(getName(model))) {
+        return false;
+      }
+    }
+    return true;
+  });
 }

@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-mobx",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "mobx eco applying with umi",
   "main": "lib/index.js",
   "repository": "https://github.com/HeskeyBaozi/umi-plugin-mobx",
@@ -9,9 +9,8 @@
   "scripts": {
     "dev": "rollup --config ./rollup.config.js --watch",
     "build": "rollup --config ./rollup.config.js",
-    "example:simple": "cross-env cd examples/simple && umi dev",
     "test": "cross-env TS_NODE_PROJECT=src/__test__/tsconfig.json mocha --require espower-typescript/guess src/__test__/**/*.spec.ts",
-    "simple": "yarn run example:simple"
+    "lint": "tslint --project ./"
   },
   "directories": {
     "test": "src/__test__"
@@ -30,10 +29,10 @@
     "mocha": "^5.2.0",
     "power-assert": "^1.6.0",
     "rollup": "^0.62.0",
-    "rollup-plugin-commonjs": "^9.1.3",
     "rollup-plugin-copy-assets": "^1.0.0",
-    "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-typescript2": "^0.15.1",
+    "tslint": "^5.10.0",
+    "tslint-react": "^3.6.0",
     "typescript": "^2.9.2"
   },
   "dependencies": {

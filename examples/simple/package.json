@@ -5,7 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "umi dev"
+    "dev": "umi dev",
+    "start": "umi dev"
   },
   "devDependencies": {
     "umi": "^1.3.13"
