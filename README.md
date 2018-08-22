@@ -1,8 +1,8 @@
-<h1 style="text-align: center">umi-plugin-mobx</h1>
+<h1 align="center">umi-plugin-mobx</h1>
 
-<p style="text-align: center">😍 use `mobx-state-tree` with umi gracefully.</p>
+<p align="center">😍 use <code>mobx-state-tree</code> with <code>umi</code> gracefully.</p>
 
-<div style="text-align: center">
+<div align="center">
 
 [![NPM version](https://img.shields.io/npm/v/umi-plugin-mobx.svg?style=flat)](https://npmjs.org/package/umi-plugin-mobx)
 [![NPM downloads](http://img.shields.io/npm/dm/umi-plugin-mobx.svg?style=flat)](https://npmjs.org/package/umi-plugin-mobx)
