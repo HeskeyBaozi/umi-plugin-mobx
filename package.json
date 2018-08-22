@@ -1,50 +1,56 @@
 {
   "name": "umi-plugin-mobx",
-  "version": "0.1.3",
-  "description": "mobx eco applying with umi",
+  "version": "0.1.4",
+  "description": "Use mobx-state-tree gracefully with umi.",
   "main": "lib/index.js",
   "repository": "https://github.com/HeskeyBaozi/umi-plugin-mobx",
   "author": "HeskeyBaozi<hezhiyu233@foxmail.com>",
   "license": "MIT",
+  "files": [
+    "lib",
+    "README_CN.md"
+  ],
   "scripts": {
-    "dev": "rollup --config ./rollup.config.js --watch",
-    "build": "rollup --config ./rollup.config.js",
+    "dev": "cross-env NODE_ENV=development rollup --config ./rollup.config.js --watch",
+    "build": "npm run clean && cross-env NODE_ENV=production rollup --config ./rollup.config.js",
     "test": "cross-env TS_NODE_PROJECT=src/__test__/tsconfig.json mocha --require espower-typescript/guess src/__test__/**/*.spec.ts",
-    "lint": "tslint --project ./"
+    "lint": "tslint --project ./tsconfig.json",
+    "clean": "rimraf lib"
   },
   "directories": {
     "test": "src/__test__"
   },
   "devDependencies": {
     "@types/globby": "^8.0.0",
-    "@types/lodash.uniq": "^4.5.3",
-    "@types/mocha": "^5.2.4",
-    "@types/node": "^10.5.1",
-    "@types/pluralize": "^0.0.28",
-    "@types/react": "^16.4.6",
-    "@types/react-router-dom": "^4.2.7",
-    "@types/webpack": "^4.4.5",
+    "@types/lodash.uniq": "^4.5.4",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.7.1",
+    "@types/pluralize": "^0.0.29",
+    "@types/react": "^16.4.11",
+    "@types/react-router-dom": "^4.3.0",
+    "@types/webpack": "^4.4.10",
     "cross-env": "^5.2.0",
     "espower-typescript": "^9.0.0",
     "mocha": "^5.2.0",
     "power-assert": "^1.6.0",
-    "rollup": "^0.62.0",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.64.1",
     "rollup-plugin-copy-assets": "^1.0.0",
-    "rollup-plugin-typescript2": "^0.15.1",
-    "tslint": "^5.10.0",
+    "rollup-plugin-typescript2": "^0.16.1",
+    "tslint": "^5.11.0",
     "tslint-react": "^3.6.0",
-    "typescript": "^2.9.2"
+    "typescript": "^3.0.1"
   },
   "dependencies": {
     "globby": "^8.0.1",
     "lodash.uniq": "^4.5.0",
-    "mobx": "^5.0.3",
-    "mobx-react": "^5.2.3",
-    "mobx-state-tree": "^2.2.0",
+    "mobx": "^5.0.4",
+    "mobx-react": "^5.2.5",
+    "mobx-state-tree": "^3.2.3",
     "pluralize": "^7.0.0"
   },
   "peerDependencies": {
-    "react": "^16.4.1",
-    "umi": "^1.3.13"
+    "react": "^16.4.2",
+    "umi": "^1.3.18"
   }
 }
