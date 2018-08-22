@@ -9,6 +9,8 @@
 
 </div>
 
+> [Docs English version](./README.md)
+
 ## Features
 
 - 使用状态树节点自动包裹路由组件（通过高阶组件形式），提供页面纬度的数据状态流。
