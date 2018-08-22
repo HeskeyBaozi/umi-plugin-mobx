@@ -1,4 +1,6 @@
-<h1 align="center">umi-plugin-mobx</h1>
+<h1 align="center">
+  <img src="./docs/umi-plugin-mobx-logo.svg"/>
+</h1>
 
 <p align="center">😍 use <code>mobx-state-tree</code> with <code>umi</code> gracefully.</p>
 
