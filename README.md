@@ -12,20 +12,20 @@
 
 > [中文文档 Docs Chinese version](./README_CN.md)
 
-## Features
+## ✨ Features
 
 - Automatically wrap route components with state tree nodes.
 - Support dynamic import state tree nodes by using `umi/dynamic`.
 - Use Mobx ecosystem rather than Redux.
 - Resolve rules are same with `umi-plugin-dva`, so you just export a state tree node by default.
 
-## Install
+## 🚀 Install
 
 ```bash
 yarn add umi-plugin-mobx
 ```
 
-## Usage
+## 🛠 Usage
 
 ### Add plugin
 
@@ -78,7 +78,7 @@ export function config() {
 }
 ```
 
-## Examples
+## 📦 Examples
 
 - [Example:user-dashboard](./examples/user-dashboard) (Recommended)
 - [Example:simple](./examples/simple)
