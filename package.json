@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-mobx",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Use mobx-state-tree gracefully with umi.",
   "main": "lib/index.js",
   "repository": "https://github.com/HeskeyBaozi/umi-plugin-mobx",
