@@ -22,3 +22,6 @@ yarn-error.log*
 
 # Cache
 .rpt2_cache
+
+# Generated
+lib
