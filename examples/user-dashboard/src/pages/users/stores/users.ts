@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { applyAction, flow, types } from 'mobx-state-tree';
+import { flow, types } from 'mobx-state-tree';
 import { Loading } from '../../../stores/$loading';
 import { $ } from '../../../utils';
 import { User } from './$user';
@@ -11,7 +11,7 @@ const Users = types
     page: types.maybe(types.number)
   }))
   .named('users')
-  .volatile((self) => {
+  .volatile(() => {
     return {
       PAGE_SIZE: 5
     };
@@ -22,7 +22,7 @@ const Users = types
         const { data, headers }: AxiosResponse<any[]> = yield $.get(`/users?_page=${page}&_limit=${self.PAGE_SIZE}`);
         self.list.clear();
         self.list.push(...data);
-        self.total = Number.parseInt(headers['x-total-count']);
+        self.total = Number.parseInt(headers['x-total-count'], 10);
         self.page = page;
       }),
       removeAsync: flow(function* removeAsync({ id }: { id: number }) {
@@ -39,6 +39,5 @@ const Users = types
 
 export type UsersType = typeof Users.Type;
 export default Users.create({
-  list: [],
-  total: null
+  list: []
 });

@@ -33,6 +33,7 @@ yarn add umi-plugin-mobx
 在`.umirc.js`文件中添加该插件，注意`umi`会自动读取`stores`文件夹作为路由（`stores`文件夹名字可自定义），为了跳过它，使用`umi-plugin-routes`来进行相应配置。
 
 安装 `umi-plugin-routes`.
+
 ```bash
 yarn add umi-plugin-routes
 ```
@@ -70,9 +71,9 @@ type Excludes = (RegExp | TestFn)[];
 type TestFn = (filename: string) => boolean;
 ```
 
-### Config mobx
+### Config Mobx
 
-Mobx [config documents](https://github.com/mobxjs/mobx/blob/gh-pages/docs/refguide/api.md#configure)
+Mobx [config documents](https://github.com/mobxjs/mobx/blob/gh-pages/docs/refguide/api.md#configure).
 ```js
 // src/mobx.ts
 // 或者 src/mobx.js
@@ -86,7 +87,6 @@ export function config() {
 ## 📦 Examples
 
 - [Example:user-dashboard](./examples/user-dashboard) (推荐)
-- [Example:simple](./examples/simple)
 
 ### 如何运行示例？
 
@@ -102,7 +102,7 @@ yarn link "umi-plugin-mobx"
 yarn start
 ```
 
-`Mobx`状态数例子:
+`Mobx` 状态树例子:
 ```ts
 // examples/user-dashboard/src/pages/users/stores/users.ts
 // 类似dva的model
