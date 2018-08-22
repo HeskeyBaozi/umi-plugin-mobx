@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="#"><img width="446" height="76" src="./docs/umi-plugin-mobx-logo.png"/></a>
+  <a href="#"><img src="./docs/umi-plugin-mobx-logo.svg"/></a>
 </div>
 
 <p align="center">😍 优雅地使用 <code>mobx-state-tree</code> 响应式数据流生态来整合<code>umi</code>.</p>
