@@ -3,7 +3,6 @@
 😍 优雅地使用`mobx-state-tree`响应式数据流生态来整合`umi`。
 
 [![NPM version](https://img.shields.io/npm/v/umi-plugin-mobx.svg?style=flat)](https://npmjs.org/package/umi-plugin-mobx)
-<!-- [![Build Status](https://img.shields.io/travis/umijs/umi-plugin-mobx.svg?style=flat)](https://travis-ci.org/umijs/umi-plugin-mobx) -->
 [![NPM downloads](http://img.shields.io/npm/dm/umi-plugin-mobx.svg?style=flat)](https://npmjs.org/package/umi-plugin-mobx)
 
 ## Features

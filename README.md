@@ -3,7 +3,6 @@
 😍 use `mobx-state-tree` with umi gracefully.
 
 [![NPM version](https://img.shields.io/npm/v/umi-plugin-mobx.svg?style=flat)](https://npmjs.org/package/umi-plugin-mobx)
-<!-- [![Build Status](https://img.shields.io/travis/umijs/umi-plugin-mobx.svg?style=flat)](https://travis-ci.org/umijs/umi-plugin-mobx) -->
 [![NPM downloads](http://img.shields.io/npm/dm/umi-plugin-mobx.svg?style=flat)](https://npmjs.org/package/umi-plugin-mobx)
 
 [中文文档 Docs Chinese version](./README_CN.md)
