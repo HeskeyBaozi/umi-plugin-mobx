@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="#"><img src="./docs/umi-plugin-mobx-logo.svg"/></a>
+  <a href="#"><img width="446" height="76" src="./docs/umi-plugin-mobx-logo.png"/></a>
 </div>
 
 <p align="center">😍 use <code>mobx-state-tree</code> with <code>umi</code> gracefully.</p>
